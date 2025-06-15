@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Live Room - Pramod Tech</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f3ff;
+      color: #222;
+    }
+    header {
+      background: #222;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    .time-display {
+      font-size: 14px;
+      color: #a0a0a0;
+      font-weight: 600;
+      font-family: monospace;
+    }
+    .brand {
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+      font-style: italic;
+      margin-top: 2px;
+    }
+    .brand-name {
+      font-weight: 700;
+      color: #4caf50;
+    }
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-weight: 600;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #6a11cb;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #loadingSpinner {
+      display: none;
+      text-align: center;
+    }
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #6a11cb;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
+    .loading-name {
+      font-weight: bold;
+      margin-top: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .room-screen {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+    .room-screen h2 {
+      font-size: 24px;
+      color: #333;
+    }
+    .room-screen p {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Live Room - Connect & Collaborate</h1>
+    <div id="timeDisplay" class="time-display"></div>
+  </header>
+  <div class="brand">Powered by <span class="brand-name">Pramod Tech Innovations</span></div>
+
+  <div class="container" id="joinScreen">
+    <label for="nameInput">Enter Your Name:</label>
+    <input type="text" id="nameInput" placeholder="e.g. Rahul" />
+
+    <label for="roomInput">Enter Room Code:</label>
+    <input type="text" id="roomInput" placeholder="e.g. ABC123" />
+
+    <button id="joinBtn" onclick="joinRoom()">Join Room</button>
+
+    <div id="loadingSpinner">
+      <div class="spinner"></div>
+      <p class="loading-name" id="loadingNameText">Joining room, please wait...</p>
+    </div>
+  </div>
+
+  <div class="room-screen" id="roomScreen">
+    <h2>Welcome to the Room!</h2>
+    <p><strong>Your Name:</strong> <span id="yourName"></span></p>
+    <p><strong>Room Code:</strong> <span id="roomCode"></span></p>
+    <p>You're now connected. Collaboration starts here! 🎥</p>
+  </div>
+
+  <script>
+    function updateTime() {
+      const timeDisplay = document.getElementById('timeDisplay');
+      const now = new Date();
+      const options = {
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        hour12: true,
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      };
+      const formatted = now.toLocaleString('en-US', options);
+      timeDisplay.textContent = formatted;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    function joinRoom() {
+      const name = document.getElementById('nameInput').value.trim();
+      const room = document.getElementById('roomInput').value.trim();
+      const loading = document.getElementById('loadingSpinner');
+      const loadingName = document.getElementById('loadingNameText');
+      const joinBtn = document.getElementById('joinBtn');
+
+      if (!name || !room) {
+        alert("Please enter your name and room code.");
+        return;
+      }
+
+      joinBtn.disabled = true;
+      loading.style.display = 'block';
+      loadingName.textContent = `Joining as ${name}, please wait...`;
+
+      setTimeout(() => {
+        document.getElementById("joinScreen").style.display = "none";
+        document.getElementById("roomScreen").style.display = "block";
+        document.getElementById("yourName").textContent = name;
+        document.getElementById("roomCode").textContent = room;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
